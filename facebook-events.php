@@ -64,7 +64,7 @@
 
     # prepare fields
     $relation_fields = array("interested", "attending", "declined", "noreply");
-    $event_fields = array("id", "name", "description", "start_time", "place");
+    $event_fields = array("id", "picture", "name", "description", "start_time", "place");
     $fields = array_merge($event_fields, $relation_fields);
 
     # get events
@@ -80,28 +80,38 @@
     for($x = 0; $x < $event_count; $x++){
       $event = $events[$x];
       $event_name = $event['name'];
-      $event_id =  $event['id'];
+      $event_id = $event['id'];
+      $event_description = $event['description'];
+      $event_picture =  $event['picture']['data']['url'];
       $event_url = "https://www.facebook.com/events/$event_id/";
+
       // draw image
+      echo "<div class='portfolio-image'>";
+      echo "<a href='' title='$event_name'>";
+      echo "<div class='portfolio-image-img'><img src='$event_picture' alt='$event_name'></div>";
+      echo "<div class='portfolio-overlay overlay-icon'></div>";
+      echo "<i class='icon-minti-plus'></i></a></div>";
+      // draw title
+      echo "<h4><a href='$event_url' title='$event_name'>$event_name</a></h4>";
+      // draw decription
+      echo "<span class='portfolio-subtitle'>$event_description</span>";
 
-      echo "<h4><a href='$event_url' title='Madco'>$event_name</a></h4>";
-
-      echo "<ul>";
-      $relations_count = count($relation_fields);
-      for($a = 0; $a < $relations_count; $a++){
-        $relation = $relation_fields[$a];
-        $relation_item_count = count($event[$relation]['data']);
-        if($relation_item_count) {
-          echo "<h4>$relation</h4>";
-          for($y = 0; $y < $relation_item_count; $y++){
-            $name = $event[$relation]['data'][$y]['name'];
-            $rsvp = $event[$relation]['data'][$y]['rsvp_status'];
-
-            echo "<li><h5>$name</h5><p>$rsvp</p></li>";
-          }
-        }
-      }
-      echo '</ul>';
+      // echo "<ul>";
+      // $relations_count = count($relation_fields);
+      // for($a = 0; $a < $relations_count; $a++){
+      //   $relation = $relation_fields[$a];
+      //   $relation_item_count = count($event[$relation]['data']);
+      //   if($relation_item_count) {
+      //     echo "<h4>$relation</h4>";
+      //     for($y = 0; $y < $relation_item_count; $y++){
+      //       $name = $event[$relation]['data'][$y]['name'];
+      //       $rsvp = $event[$relation]['data'][$y]['rsvp_status'];
+      //
+      //       echo "<li><h5>$name</h5><p>$rsvp</p></li>";
+      //     }
+      //   }
+      // }
+      // echo '</ul>';
     }
     echo "</div>";
   }
