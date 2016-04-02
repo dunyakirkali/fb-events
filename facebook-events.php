@@ -9,9 +9,9 @@
   * License: GPL2
   */
 
-
   add_action('admin_menu', 'fb_events_menu');
   add_action('admin_init', 'fb_events_settings');
+  add_shortcode('fb_events', 'fb_events_list');
 
   function fb_events_settings() {
 	  register_setting('fb-events-settings-group', 'fb_page_token');
@@ -37,5 +37,15 @@
             <?php submit_button(); ?>
         </form>
       </div>
+    <?php
+  }
+
+  function fb_events_list($atts) {
+    ?>
+      <ul>
+        <li>A</li>
+        <li>B</li>
+        <li>C</li>
+      </ul>
     <?php
   }
