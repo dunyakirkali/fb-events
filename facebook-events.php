@@ -10,7 +10,7 @@
   */
 
   session_start();
-  include('src/facebook.php');
+  include('src/Facebook/autoload.php');
 
   add_action('admin_menu', 'fb_events_menu');
   add_action('admin_init', 'fb_events_settings');
@@ -52,14 +52,12 @@
   function fb_events_list($atts) {
     $url = get_option('fb_page_id') . "/events";
     $events = [['name' => 'Dunya'], ['name' => 'Ilana']];
-    echo $session;
-    echo $url;
-    // $fb = new Facebook\Facebook([
-    //   'app_id' => '{app-id}',
-    //   'app_secret' => '{app-secret}',
-    //   'default_graph_version' => 'v2.5',
-    //   'default_access_token' => get_option('fb_page_token')
-    // ]);
+    $fb = new Facebook\Facebook([
+       'app_id' => '{app-id}',
+      'app_secret' => '{app-secret}',
+      'default_graph_version' => 'v2.5',
+      'default_access_token' => get_option('fb_page_token')
+    ]);
     try {
       // Get the Facebook\GraphNodes\GraphUser object for the current user.
       // If you provided a 'default_access_token', the '{access-token}' is optional.
@@ -78,7 +76,8 @@
     <ul>
       <?php
         for ($x = 0; $x < count($events); $x++) {
-          echo "<li>$x</li>";
+          $event_name = $events[$x]['name'];
+          echo "<li>$event_name</li>";
         }
       ?>
       </ul>
