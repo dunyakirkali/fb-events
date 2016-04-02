@@ -10,18 +10,18 @@
   */
 
 
-  add_action('admin_menu', 'my_plugin_menu');
-  add_action('admin_init', 'my_plugin_settings');
+  add_action('admin_menu', 'fb_events_menu');
+  add_action('admin_init', 'fb_events_settings');
 
-  function my_plugin_settings() {
+  function fb_events_settings() {
 	  register_setting('fb-events-settings-group', 'fb_page_token');
   }
 
-  function my_plugin_menu() {
-	  add_menu_page('My Plugin Settings', 'FB Event', 'administrator', 'my-plugin-settings', 'my_plugin_settings_page', 'dashicons-admin-generic');
+  function fb_events_menu() {
+	  add_menu_page('Facebook Events Settings', 'FB Events', 'administrator', 'my-plugin-settings', 'fb_events_settings_page', 'dashicons-admin-generic');
   }
 
-  function my_plugin_settings_page() {
+  function fb_events_settings_page() {
     ?>
     <div class="wrap">
       <h2>Facebook Settings</h2>
