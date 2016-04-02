@@ -16,12 +16,12 @@
   add_action('admin_init', 'fb_events_settings');
   add_shortcode('fb_events', 'fb_events_list');
 
-
   function fb_events_settings() {
-    register_setting('fb-events-settings-group', 'fb_page_id');
-    register_setting('fb-events-settings-group', 'fb_client_id');
-    register_setting('fb-events-settings-group', 'fb_client_secret');
-    register_setting('fb-events-settings-group', 'access_token');
+    $options = array('fb_page_id', 'fb_client_id', 'fb_client_secret', 'access_token');
+    $option_count = count($options);
+    for($i = 0; $i < $option_count; $i++){
+      register_setting('fb-events-settings-group', $options[$i]);
+    }
   }
 
   function fb_events_menu() {
@@ -29,6 +29,7 @@
   }
 
   function fb_events_settings_page() {
+    $options = array('fb_page_id', 'fb_client_id', 'fb_client_secret', 'access_token');
     ?>
     <div class="wrap">
       <h2>Facebook Settings</h2>
@@ -36,22 +37,17 @@
           <?php settings_fields( 'fb-events-settings-group' ); ?>
           <?php do_settings_sections( 'fb-events-settings-group' ); ?>
             <table class="form-table">
-              <tr>
-                <th scope="row"><label for="fb_page_id">FB Page id</label></th>
-                <td><input name="fb_page_id" type="text" value="<?php echo esc_attr( get_option('fb_page_id') ); ?>" class="regular-text"></td>
-              </tr>
-              <tr>
-                <th scope="row"><label for="fb_client_id">FB App Client id</label></th>
-                <td><input name="fb_client_id" type="text" value="<?php echo esc_attr( get_option('fb_client_id') ); ?>" class="regular-text"></td>
-              </tr>
-              <tr>
-                <th scope="row"><label for="fb_client_secret">FB App Client secret</label></th>
-                <td><input name="fb_client_secret" type="text" value="<?php echo esc_attr( get_option('fb_client_secret') ); ?>" class="regular-text"></td>
-              </tr>
-              <tr>
-                <th scope="row"><label for="access_token">FB App Access Token</label></th>
-                <td><input name="access_token" type="text" value="<?php echo esc_attr( get_option('access_token') ); ?>" class="regular-text"></td>
-              </tr>
+              <?php
+                $option_count = count($options);
+                for($i = 0; $i < $option_count; $i++){
+                  $option = $options[$i];
+                  $val = esc_attr( get_option($option) );
+                  echo "<tr>";
+                  echo "<th scope='row'><label for='$option'>$option</label></th>";
+                  echo "<td><input name='$option' type='text' value='$val' class='regular-text'></td>";
+                  echo "</tr>";
+                }
+              ?>
             </table>
             <?php submit_button(); ?>
         </form>
@@ -68,7 +64,7 @@
 
     # prepare fields
     $relation_fields = array("interested", "attending", "declined", "noreply");
-    $event_fields = array("name", "description");
+    $event_fields = array("name", "description", "start_time", "place");
     $fields = array_merge($event_fields, $relation_fields);
 
     # get events
@@ -79,17 +75,17 @@
     $events = $obj['data'];
 
     // draw events
-    echo '<ul>';
-
+    echo '<div class="term-wonen portfolio-item eight columns">';
     $event_count = count($events);
     for($x = 0; $x < $event_count; $x++){
       $event = $events[$x];
-      echo "<li>";
-      $event_fields_count = count($event_fields);
-      for($i = 0; $i < $event_fields_count; $i++){
-        $event_value = $event[$event_fields[$i]];
-        echo "<p>$event_value</p>";
-      }
+      $event_name = $event['name'];
+      $event_url = $event['name'];
+
+      // draw image
+
+      echo "<h4><a href='$event_url' title='Madco'>$event_name</a></h4>";
+
       echo "<ul>";
       $relations_count = count($relation_fields);
       for($a = 0; $a < $relations_count; $a++){
@@ -106,7 +102,6 @@
         }
       }
       echo '</ul>';
-      echo "</li>";
     }
-    echo "</ul>";
+    echo "</div>";
   }
