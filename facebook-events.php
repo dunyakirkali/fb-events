@@ -64,7 +64,7 @@
 
     # prepare fields
     $relation_fields = array("interested", "attending", "declined", "noreply");
-    $event_fields = array("name", "description", "start_time", "place");
+    $event_fields = array("id", "name", "description", "start_time", "place");
     $fields = array_merge($event_fields, $relation_fields);
 
     # get events
@@ -80,8 +80,8 @@
     for($x = 0; $x < $event_count; $x++){
       $event = $events[$x];
       $event_name = $event['name'];
-      $event_url = $event['name'];
-
+      $event_id =  $event['id'];
+      $event_url = "https://www.facebook.com/events/$event_id/";
       // draw image
 
       echo "<h4><a href='$event_url' title='Madco'>$event_name</a></h4>";
