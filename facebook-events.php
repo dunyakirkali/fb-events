@@ -9,9 +9,6 @@
   * License: GPL2
   */
 
-  session_start();
-  include('src/Facebook/autoload.php');
-
   add_action('admin_menu', 'fb_events_menu');
   add_action('admin_init', 'fb_events_settings');
   add_shortcode('fb_events', 'fb_events_list');
